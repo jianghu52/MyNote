@@ -1,4 +1,4 @@
-<h1>使用vps部署django:uwsgi+nginx</h1>
+<h3>使用vps部署django:uwsgi+nginx</h3>
 
 <h2>vps环境：</h2>
 <ul>
@@ -15,6 +15,12 @@ python2.7.5。
 </p>
 
 <h2>环境配置：</h2>
+<pre><code>安装一些必要的依赖包：
+升级包：yum update
+安装一些必要包：yum install python python-devel libxml2 libxml2-devel python-setuptools 
+zlib-devel wget openssl-devel pcre pcre-devel sudo gcc make autoconf automake
+</code></pre>
+
 <h3>升级python:</h3>
 <pre><code>1.下载python安装包：
 	wget --no-check-certificate http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tgz
