@@ -1,4 +1,4 @@
-<h3>使用vps部署django:uwsgi+nginx+linux</h3>
+<h3>使用vps部署django:uwsgi+nginx</h3>
 
 <h2>配置：</h2>
 
@@ -16,8 +16,7 @@ python2.7.5。
 </p>
 
 <h3>升级python:</h3>
-<pre><code>
-1.下载python安装包：
+<pre><code>1.下载python安装包：
 	wget --no-check-certificate http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tgz
 2.解压：
 	tar -xzvf Python-2.7.5.tgz
@@ -42,3 +41,49 @@ python2.7.5。
 	See `config.log' for more details	
 同样make之前需要安装： yum -y install gcc automake autoconf libtool make
 </code></pre>
+
+<h3>安装setuptools、pip:</h3>
+<h4>安装setuptools:</h4>
+<pre><code>1.下载：
+	wget http://pypi.douban.com/packages/source/s/setuptools/setuptools-3.3.tar.gz
+2.解压安装：  
+	tar zxvf setuptools-3.3.tar.gz
+	cd setuptools-3.3
+	python setup.py build
+	sudo python setup.py install
+注意如果安装失败：
+	缺少zlib，安装setuptools时出错。
+		issue: RuntimeError: Compression requires the (missing) zlib module
+		<b>yum install zlib zlib-devel -y</b>
+	重新make Python2.7再安装
+		cd ../Python-2.7.6
+		make # 这时可以发现之前make时缺了不少模块
+		make install
+</code></pre>
+
+<h4>安装pip:</h4>
+<pre><code>
+直接安装:easy_install -i http://pypi.douban.com/simple pip
+如果出现错误：
+	# issue: ImportError: cannot import name HTTPSHandler
+则安装：yum install openssl openssl-devel -y
+重新编译安装python:
+进入之前的python 2.7.5文件夹：
+	make && make install
+</code></pre>
+
+<h3>安装django:</h3>
+<code>pip install Django==1.5.5</code>
+
+<h2>安装配置uwsgi:</h2>
+<p>直接通过pip安装：
+	pip install uwsgi</p>
+<h5>第一个wsgi程序：</h5>
+<pre><code>
+#test.py
+def application(env,start_response):
+	start_response('200 OK',[('Content-Type','text/html')])
+	return ["hello world"]
+</code></pre>
+<code>测试运行uwsgi:uwsgi --http :9090 --wsgi-file test.py</code>
+通过浏览器 ： [vpsip]:9090 看到常见的 hello world 界面则配置成功
