@@ -209,7 +209,6 @@ PS：（ps -ef|grep命令获得master进程的PID）</code></pre>
 │   ├── __init__.py
 │   ├── settings.py
 │   ├── urls.py
-│   ├── urls.pyc
 │   ├── views.py
 │   └── wsgi.py
 ├── static
