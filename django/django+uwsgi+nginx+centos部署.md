@@ -56,7 +56,7 @@ python2.7.5。
 		issue: RuntimeError: Compression requires the (missing) zlib module
 		<b>yum install zlib zlib-devel -y</b>
 	重新make Python2.7再安装
-		cd ../Python-2.7.6
+		cd ../Python-2.7.5
 		make # 这时可以发现之前make时缺了不少模块
 		make install
 </code></pre>
@@ -116,4 +116,89 @@ uwsgi --http :8000 --chdir /home/google/kola/mytest/mysite --module django_wsgi
 # ps -ef|grep uwsgi|grep -v grep|awk '{print $2}'|xargs kill -9
 </code></pre>
 
-<h1>nginx 部分的内容明天整理</h1>
+<h2>nginx安装配置:</h2>
+<h3>编译安装nginx:</h3>
+<pre><code>下载：
+	wget http://nginx.org/download/nginx-1.6.0.tar.gz
+解压: 
+	tar -zxvf nginx-1.6.0.tar.gz
+编译：
+	./configure --prefix=/usr/local/nginx # 编译选项配置，这里从简
+编译安装：
+	make && make install # 编译安装
+将生成的nginx可执行文件在/usr/sbin里建立软链接 ：
+	ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx</code></pre>
+<p>安装成功后，直接运行命令 “nginx”，进入浏览器输入vpsIP，看到welcome to nginx则配置成功</p>
+<h3>django+nginx+uwsgi配置：</h3>
+<p>在django项目文件夹新建django_socket.xml(跟manage.py同一目录)：</p>
+<pre><code><uwsgi>
+    <socket>:8077</socket>
+    <chdir>/root/mysite</chdir>
+    <module>django_wsgi</module>
+    <processes>4</processes> <!-- 进程数 --> 
+    <daemonize>uwsgi.log</daemonize>
+</uwsgi>
+</code></pre>
+<h3>修改nginx配置文件/usr/local/nginx/conf/nginx.conf：</h3>
+<pre><code><b>注意logs日志文件夹、static、media文件夹都必须存在</b>
+server {
+        listen 80;
+        server_name localhost;
+		
+        access_log /var/log/test/access.log;
+        error_log /var/log/test/error.log;
+		
+        #charset koi8-r;
+        #access_log logs/host.access.log main;
+		
+        location / {
+         include uwsgi_params;
+         uwsgi_pass 127.0.0.1:8077;
+        }
+		
+        #error_page 404 /404.html;
+        # redirect server error pages to the static page /50x.html
+        #
+		
+        error_page 500 502 503 504 /50x.html;
+		
+        location = /50x.html {
+            root html;
+        }
+		
+        location /static/ {
+            alias /root/mysite/static;
+            index index.html index.htm;
+        }
+        location /media/ {
+            alias /root/mysite/media/;
+        }
+    }</code></pre>
+<p>配置成功后，
+重启nginx：
+nginx -s reload </p>
+
+<h4>uwsgi + nginx + django 测试运行：</h4>
+<pre><code>进入django项目文件夹：
+运行uwsgi命令：
+uwsgi -x django_socket.xml
+访问uwsgi.log日志看是否有异常发生，如无异常，打开浏览器，访问[vps的ip地址] ;
+单独使用Django启动的程序一模一样时，就说明成功！
+</code></pre>
+
+<h4>附录django测试项目的树目录：</h4>
+<pre><code>.
+├── django_socket.xml
+├── django_wsgi.py
+├── manage.py
+├── media
+├── mysite
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── urls.pyc
+│   ├── views.py
+│   └── wsgi.py
+├── static
+└── uwsgi.log
+</code></pre>
