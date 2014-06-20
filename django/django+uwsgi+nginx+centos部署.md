@@ -1,4 +1,4 @@
-<h3>使用vps部署django:uwsgi+nginx+centos</h3>
+<h3>使用vps部署django:uwsgi+nginx+linux</h3>
 
 <h2>配置：</h2>
 
@@ -16,7 +16,7 @@ python2.7.5。
 </p>
 
 <h3>升级python:</h3>
-<code>
+<pre><code>
 1.下载python安装包：
 	wget --no-check-certificate http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tgz
 2.解压：
@@ -41,4 +41,4 @@ python2.7.5。
 	configure: error: no acceptable C compiler found in $PATH
 	See `config.log' for more details	
 同样make之前需要安装： yum -y install gcc automake autoconf libtool make
-</code>
+</code></pre>
