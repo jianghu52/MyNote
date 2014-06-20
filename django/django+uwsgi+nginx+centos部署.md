@@ -1,4 +1,4 @@
-<h3>使用vps部署django:uwsgi+nginx</h3>
+<h1>使用vps部署django:uwsgi+nginx</h1>
 
 <h2>vps环境：</h2>
 <ul>
@@ -98,7 +98,7 @@ import sys
 # 将系统的编码设置为UTF8
 reload(sys)
 sys.setdefaultencoding('utf8')
- 
+
 #注意："mysite.settings" 和项目文件夹对应。
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 
@@ -185,7 +185,14 @@ uwsgi -x django_socket.xml
 访问uwsgi.log日志看是否有异常发生，如无异常，打开浏览器，访问[vps的ip地址] ;
 单独使用Django启动的程序一模一样时，就说明成功！
 </code></pre>
-
+<h4>停止nginx:</h4>
+<pre><code>强行停止nginx所有进程：
+	pkill -9 nginx  
+从容停止：
+	kill -QUIT 【Nginx主进程号】  
+快速停止：
+	kill -TERM 【Nginx主进程号】  或  kill -INT 【Nginx主进程号】
+PS：（ps -ef|grep命令获得master进程的PID）</code></pre>
 <h4>附录django测试项目的树目录：</h4>
 <pre><code>.
 ├── django_socket.xml
