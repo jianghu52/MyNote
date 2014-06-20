@@ -1,4 +1,4 @@
-<h3>使用vps部署django:uwsgi+nginx</h3>
+<h1>使用vps部署django:uwsgi+nginx</h1>
 
 <h2>vps环境：</h2>
 <ul>
