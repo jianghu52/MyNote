@@ -1,7 +1,6 @@
 <h3>使用vps部署django:uwsgi+nginx</h3>
 
-<h2>配置：</h2>
-
+<h2>vps环境：</h2>
 <ul>
 <li>centos 6.5 32位</li>
 <li>python 2.7.5</li>
@@ -15,6 +14,7 @@ vps的系统是centos6.5 ,所以自带的python版本是2.6.6,首先升级python
 python2.7.5。
 </p>
 
+<h2>环境配置：</h2>
 <h3>升级python:</h3>
 <pre><code>1.下载python安装包：
 	wget --no-check-certificate http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tgz
@@ -62,8 +62,7 @@ python2.7.5。
 </code></pre>
 
 <h4>安装pip:</h4>
-<pre><code>
-直接安装:easy_install -i http://pypi.douban.com/simple pip
+<pre><code>直接安装:easy_install -i http://pypi.douban.com/simple pip
 如果出现错误：
 	# issue: ImportError: cannot import name HTTPSHandler
 则安装：yum install openssl openssl-devel -y
@@ -75,15 +74,46 @@ python2.7.5。
 <h3>安装django:</h3>
 <code>pip install Django==1.5.5</code>
 
-<h2>安装配置uwsgi:</h2>
+<h2>配置uwsgi:</h2>
+<h3>安装uwsgi与测试：</h3>
 <p>直接通过pip安装：
 	pip install uwsgi</p>
 <h5>第一个wsgi程序：</h5>
-<pre><code>
-#test.py
+<pre><code>#test.py
 def application(env,start_response):
 	start_response('200 OK',[('Content-Type','text/html')])
 	return ["hello world"]
 </code></pre>
 <code>测试运行uwsgi:uwsgi --http :9090 --wsgi-file test.py</code>
-通过浏览器 ： [vpsip]:9090 看到常见的 hello world 界面则配置成功
+<p>通过浏览器 ： [vps的ip]:9090 看到常见的 hello world 界面则配置成功</p>
+<h3>uwsgi配置django：</h3>
+<p>建立一个django项目mysite,在mysite下建立文件django_wsgi.py 文件，和manage.py文件同级目录
+配置如下：</p>
+<pre><code>#!/usr/bin/env python
+# coding: utf-8
+
+import os
+import sys
+
+# 将系统的编码设置为UTF8
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+#注意："mysite.settings" 和项目文件夹对应。
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
+
+from django.core.handlers.wsgi import WSGIHandler
+application = WSGIHandler()
+</code></pre>
+<pre><code>配置好后，直接运行：
+uwsgi --http :8000 --chdir /home/google/kola/mytest/mysite --module django_wsgi
+进入浏览器： [vps的ip]：8000 就能看到django的欢迎界面
+</code></pre>
+<h4>uwsgi进程关闭</h4>
+<pre><code>使用awk选出所有的进程id:
+# ps -ef|grep uwsgi|grep -v grep|awk '{print $2}' 
+使用xargs kill所有进程:
+# ps -ef|grep uwsgi|grep -v grep|awk '{print $2}'|xargs kill -9
+</code></pre>
+
+<h1>nginx 部分的内容明天整理</h1>
