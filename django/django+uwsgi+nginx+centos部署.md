@@ -98,7 +98,7 @@ import sys
 # 将系统的编码设置为UTF8
 reload(sys)
 sys.setdefaultencoding('utf8')
-
+ 
 #注意："mysite.settings" 和项目文件夹对应。
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 
