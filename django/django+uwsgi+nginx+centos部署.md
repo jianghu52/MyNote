@@ -199,6 +199,13 @@ uwsgi -x django_socket.xml
 快速停止：
 	kill -TERM 【Nginx主进程号】  或  kill -INT 【Nginx主进程号】
 PS：（ps -ef|grep命令获得master进程的PID）</code></pre>
+
+
+<h4>重载uwsgi、nginx:</h4>
+<pre><code>invoke-rc.d uwsgi reload 
+nginx -s reload
+</code></pre>
+
 <h4>附录django测试项目的树目录：</h4>
 <pre><code>.
 ├── django_socket.xml
