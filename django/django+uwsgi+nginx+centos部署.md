@@ -137,13 +137,13 @@ uwsgi --http :8000 --chdir /home/google/kola/mytest/mysite --module django_wsgi
 <p>安装成功后，直接运行命令 “nginx”，进入浏览器输入vpsIP，看到welcome to nginx则配置成功</p>
 <h3>django+nginx+uwsgi配置：</h3>
 <p>在django项目文件夹新建django_socket.xml(跟manage.py同一目录)：</p>
-<pre><code><uwsgi>
-    <socket>:8077</socket>
-    <chdir>/root/mysite</chdir>
-    <module>django_wsgi</module>
-    <processes>4</processes> <!-- 进程数 --> 
-    <daemonize>uwsgi.log</daemonize>
-</uwsgi>
+<pre><code>&lt;uwsgi&gt;
+    &lt;socket&gt;:8077&lt;/socket&gt;
+    &lt;chdir&gt;/root/mysite&lt;/chdir&gt;
+    &lt;module&gt;django_wsgi&lt;/module&gt;
+    &lt;processes&gt;4&lt;/processes> &lt;!-- 进程数 --&gt; 
+    &lt;daemonize&gt;uwsgi.log&lt;/daemonize&gt;
+&lt;/uwsgi&gt;
 </code></pre>
 <h3>修改nginx配置文件/usr/local/nginx/conf/nginx.conf：</h3>
 <pre><code><b>注意logs日志文件夹、static、media文件夹都必须存在</b>
