@@ -11,19 +11,21 @@
 ####1.在django项目app目录下创建management目录及command目录
 我们自己建立的application叫做app在这个app目录下，需要新建management目录，这个目录里应该包括： _ _ init _ _ .py（内容为空，用于打包）和commands目录，然后在commands目录下包括： _ _ init _ _.py和mycommand.py ，其中 mycommand.py就是用于我们自定义command的方法，目录的树状结构如下：
 
-  .
-  ├── app
-  │   ├── __init__.py
-  │   ├── management
-  │   │   ├── commands
-  │   │   │   ├── __init__.py
-  │   │   │   └── mycommand.py
-  │   │   └── __init__.py
-  │   ├── models.py
-  │   ├── urls.py
-  │   └── views.py
-  ├── __init__.py
-  └── manage.py
+
+	  .
+	  ├── app
+	  │   ├── __init__.py
+	  │   ├── management
+	  │   │   ├── commands
+	  │   │   │   ├── __init__.py
+	  │   │   │   └── mycommand.py
+	  │   │   └── __init__.py
+	  │   ├── models.py
+	  │   ├── urls.py
+	  │   └── views.py
+	  ├── __init__.py
+	  └── manage.py
+
 
 ####2.定义django command命令
 在mycommand.py的command进行内容书写，简单示例如下：
