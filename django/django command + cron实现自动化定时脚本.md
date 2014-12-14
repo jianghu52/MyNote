@@ -99,4 +99,4 @@ command.sh:
 	1.每个小时的第30分钟运行一次 hour_command 命令。
 	2.每天的23点59分运行一次 day_command 命令。
 
-使用 **sh command.sh** 启动 corntab 定时脚本。
+使用 **sh command.sh** 启动 corntab 定时脚本
